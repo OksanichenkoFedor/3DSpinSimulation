@@ -6,13 +6,13 @@ from pygame.draw import rect
 import matplotlib.pyplot as plt
 from tqdm.autonotebook import tqdm
 
-N = 100
+N = 50
 dx = 1
 g = 1
 h = 1
-dt = 0.02
+dt = 0.005
 n_eff = 2
-block_size = 5
+block_size = 10
 FPS = 1000
 WHT = (255, 255, 255)
 B = np.array([0, 0, 1])
@@ -71,15 +71,35 @@ def draw_timer(S_curr, B, N, g, h, dx, dt, n_eff, Full_time=10):
         for event in pygame.event.get():
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_ESCAPE:
-                    finished = True
+                    print()
+                    a = input("Enter averaging number ")
+                    try:
+                        n = int(a)
+                    except:
+                        print("Incorrect input, n=100")
+                        n = 100
+                    C1 = count_mean(C, n)
+                    plt.plot(C1)
+                    plt.show()
+                    np.savetxt(str(timer)+"_"+str(n)+".txt",C1)
     pygame.quit()
     return C
 
 
 B = np.array([0, 0, 1])
-C = draw_timer(S2, B, N, g, h, dx, dt, n_eff, Full_time=10000)
-C = count_mean(C, 100)
-plt.plot(C)
-plt.show()
+C = draw_timer(S2, B, N, g, h, dx, dt, n_eff, Full_time=100000)
+while True:
+    print()
+    a = input("Enter averaging number ")
+    try:
+        n = int(a)
+    except:
+        print("Incorrect input, n=100")
+        n = 100
+    C1 = count_mean(C, n)
+    plt.plot(C1)
+
+    plt.show()
+    np.savetxt(str(len(C)) + "_" + str(n) + ".txt", C1)
 
 # print(step1(S, B, N, g, h, dx, dt, n_eff))

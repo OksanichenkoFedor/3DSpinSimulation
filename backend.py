@@ -128,9 +128,7 @@ def step(S, B, N, g, h, dx, dt, n_eff):
 def count_mean(C, n_mean):
     C = np.array(C)
     C_new = []
-    for i in range(len(C)):
-        if i<n_mean:
-            C_new.append(C[:i].mean())
-        else:
-            C_new.append(C[i-n_mean:i])
-    return np.array(C_new)
+    for i in range(len(C)-n_mean):
+        C_new.append(((C[i:i+n_mean]*C[0:0+n_mean]).mean()))
+    C_new = np.array(C_new)
+    return C_new/np.max(C_new)
